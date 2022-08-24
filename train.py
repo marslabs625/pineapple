@@ -28,7 +28,8 @@ test_label_path = os.path.join(data_dir, 'test.csv')
 
 data = Pineapple(train_label_path, data_dir)
 print(len(data))
-training_data, val_data, test_data = random_split(data, [56, 8, 8], generator=torch.Generator().manual_seed(42))
+training_data, val_data, test_data = random_split(data, [112, 16, 16], generator=torch.Generator().manual_seed(42))
+#上面的數字我*2了
 train_dataloader = DataLoader(training_data, batch_size=train_batch_size, shuffle=True)
 val_dataloader = DataLoader(val_data, batch_size=train_batch_size)
 test_dataloader = DataLoader(test_data, batch_size=test_batch_size)
