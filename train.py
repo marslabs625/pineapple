@@ -37,7 +37,7 @@ test_dataloader = DataLoader(test_data, batch_size=test_batch_size)
 # if __name__ == '__main__': ##if workers != 0
 #assign model
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-# device = 'cpu'
+#device = 'cpu'
 print('Using {} device'.format(device))
 print('========================================')
 

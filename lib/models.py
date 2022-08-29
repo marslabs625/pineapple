@@ -28,7 +28,7 @@ class CNN(nn.Module):
         self.classifier = nn.Sequential(
             nn.Linear(128*67*64, 512), 
             nn.Linear(512, 512), 
-            nn.Linear(512, 3), 
+            nn.Linear(512, 4), 
             nn.Softmax(dim=1)
         )
     
@@ -90,9 +90,10 @@ class VGG16(nn.Module):
         )
         self.flatten = nn.Flatten()
         self.classifier = nn.Sequential(
-            nn.Linear(8*4*512, 4096), 
+            nn.Linear(69632, 4096),
+            #nn.Linear(8*4*512, 69632),
             nn.Linear(4096, 4096), 
-            nn.Linear(4096, 3), 
+            nn.Linear(4096, 4), 
             nn.Softmax(dim=1)
         )
 
@@ -162,7 +163,7 @@ class VGG19(nn.Module):
         self.classifier = nn.Sequential(
             nn.Linear(8*4*512, 4096), 
             nn.Linear(4096, 4096), 
-            nn.Linear(4096, 3), 
+            nn.Linear(4096, 4), 
             nn.Softmax(dim=1)
         )
 
@@ -182,7 +183,7 @@ class ResNet50(nn.Module):
         super(ResNet50, self).__init__()
         self.conv1 = nn.Conv2d(1, 3, 1)
         self.resnet50 = resnet50(pretrained=pretrained)
-        self.resnet50.fc = nn.Linear(2048, 3)
+        self.resnet50.fc = nn.Linear(2048, 4)
         self.softmax = nn.Softmax(dim=1)
     
     def forward(self, x):

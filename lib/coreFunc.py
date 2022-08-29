@@ -46,7 +46,7 @@ def test_loop(dataloader, model, loss_fn, batch_size, device, mode):
     '''
     size = len(dataloader.dataset)
     test_loss, test_acc = 0, 0
-    confusion_matrix = Confusion_Matrix(3)
+    confusion_matrix = Confusion_Matrix(4)
     model.eval()
 
     with torch.no_grad():
