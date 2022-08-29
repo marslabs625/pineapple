@@ -21,12 +21,8 @@ early_stop = 50
 plotter_x_interval = 100
 
 #load data
-data_dir = './data/wav/dictionary'
-train_label_path = os.path.join(data_dir, 'train.csv')
-val_label_path = os.path.join(data_dir, 'validation.csv')
-test_label_path = os.path.join(data_dir, 'test.csv')
-
-data = Pineapple(train_label_path, data_dir)
+data_dir = './data/wav'
+data = Pineapple(data_dir)
 print(len(data))
 training_data, val_data, test_data = random_split(data, [112, 16, 16], generator=torch.Generator().manual_seed(42))
 #上面的數字我*2了

@@ -12,17 +12,16 @@ import numpy as np
 import pandas as pd
 
 class Pineapple(Dataset):
-    def __init__(self, annotations_file, data_dir):
-        data_path = "./data/wav"
+    def __init__(self, data_path):
+        data_dir = os.path.join(data_path, 'dictionary')
         paths = os.listdir(data_dir)
-        print("asdasdasd",data_dir)
+        print("path",data_dir)
         paths = [f'{p}/cam-1/pine-bottom/mic-1' for p in paths]
 
         self.max_length = 0
         self.paths = []
         self.sounds = []
         self.srs = []
-        #self.cates = []
         for p in paths:
             for f in os.listdir(f'{data_dir}/{p}'):
                 path = f'{data_dir}/{p}/{f}'
@@ -34,13 +33,13 @@ class Pineapple(Dataset):
                     self.max_length = sound.shape[0]
         self.test_csv = pd.read_csv(os.path.join(data_path, 'train.csv'), sep = ',', header = None)
         self.test_csv = self.test_csv.astype('str')
-        temp1 = [] #
-        temp2 = [] #
-        for i in range(len(self.test_csv[0])*2): #
-            temp1.append(i+1) #
-            temp2.append(self.test_csv[1][int(i/2)]) #
-        self.test_csv=pd.DataFrame(zip(temp1,temp2)) #
-        self.test_csv = self.test_csv.astype('str') #
+        temp1 = []
+        temp2 = []
+        for i in range(len(self.test_csv[0])*2):
+            temp1.append(i+1)
+            temp2.append(self.test_csv[1][int(i/2)])
+        self.test_csv=pd.DataFrame(zip(temp1,temp2))
+        self.test_csv = self.test_csv.astype('str')
         #這邊將標記檔*2
         self.test_csv[0] = self.test_csv[0] + '.npy'
         self.labels_csv = {}
@@ -63,6 +62,6 @@ class Pineapple(Dataset):
         label = int(self.labels_csv.iloc[idx][0]) #test 原本是0 我測試用的 不確定對不對 對照原本的程式碼感覺是這樣
         logmel = np.expand_dims(logmel, axis=0) # test
         data = torch.as_tensor(logmel, dtype=torch.float32)
-        print(data,label) #
+        #print(data,label)
         label = torch.as_tensor(label, dtype=torch.int64)
         return data, label
