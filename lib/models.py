@@ -90,7 +90,7 @@ class VGG16(nn.Module):
         )
         self.flatten = nn.Flatten()
         self.classifier = nn.Sequential(
-            nn.Linear(69632, 4096),
+            nn.Linear(28672, 4096),
             #nn.Linear(8*4*512, 69632),
             nn.Linear(4096, 4096), 
             nn.Linear(4096, 4), 

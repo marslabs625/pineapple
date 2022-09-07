@@ -8,14 +8,14 @@ from torchvision.models import vgg16
 import os
 import pandas as pd
 
-model_name = 'vgg-test'
+model_name = 'vgg-test_learning_rate = 1e-6_3'
 weights_path = os.path.join('./weights', model_name)
 results_path = os.path.join('./results', model_name)
 
 train_batch_size = 8
 test_batch_size = 8
-learning_rate = 1e-7
-epochs = 10
+learning_rate = 1e-6
+epochs = 500
 early_stop = 50
 
 plotter_x_interval = 100
@@ -24,7 +24,7 @@ plotter_x_interval = 100
 data_dir = './data/wav'
 data = Pineapple(data_dir)
 print(len(data))
-training_data, val_data, test_data = random_split(data, [112, 16, 16], generator=torch.Generator().manual_seed(42))
+training_data, val_data, test_data = random_split(data, [882, 126, 252], generator=torch.Generator().manual_seed(42))
 #上面的數字我*2了
 train_dataloader = DataLoader(training_data, batch_size=train_batch_size, shuffle=True)
 val_dataloader = DataLoader(val_data, batch_size=train_batch_size)
@@ -46,7 +46,7 @@ model = model.to(device)
 print(model)
 print('========================================')
 
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-2)
+optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, weight_decay=1e-2, momentum=0.9)
 loss_fn = torch.nn.CrossEntropyLoss()
 
 #training

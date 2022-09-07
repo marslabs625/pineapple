@@ -16,8 +16,8 @@ class Pineapple(Dataset):
         data_dir = os.path.join(data_path, 'dictionary')
         paths = os.listdir(data_dir)
         print("path",data_dir)
-        paths = [f'{p}/cam-1/pine-bottom/mic-1' for p in paths]
-
+        dicts = ["pine-bottom", "pine-side"]
+        paths = [f'{p}/cam-1/{g}/mic-1' for p in paths for g in dicts]
         self.max_length = 0
         self.paths = []
         self.sounds = []
@@ -26,7 +26,8 @@ class Pineapple(Dataset):
             for f in os.listdir(f'{data_dir}/{p}'):
                 path = f'{data_dir}/{p}/{f}'
                 self.paths.append(path)
-                sound, sr = librosa.load(path)
+                #print(librosa.load(path))
+                sound, sr = librosa.load(path,duration=7.0)
                 self.sounds.append(sound)
                 self.srs.append(sr)
                 if self.max_length < sound.shape[0]:
@@ -35,9 +36,10 @@ class Pineapple(Dataset):
         self.test_csv = self.test_csv.astype('str')
         temp1 = []
         temp2 = []
-        for i in range(len(self.test_csv[0])*2):
+        for i in range(len(self.test_csv[0])*4):
             temp1.append(i+1)
-            temp2.append(self.test_csv[1][int(i/2)])
+            temp2.append(self.test_csv[1][int(i/4)])
+        
         self.test_csv=pd.DataFrame(zip(temp1,temp2))
         self.test_csv = self.test_csv.astype('str')
         #這邊將標記檔*2
