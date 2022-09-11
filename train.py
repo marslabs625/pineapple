@@ -2,13 +2,14 @@ from lib.dataset import Pineapple
 from lib.models import VGG16
 from lib.coreFunc import fit, evaluate, replace_weights
 from lib.tools import Plotter
-from torch.utils.data import DataLoader, random_split
+from lib.random import Random
+from torch.utils.data import DataLoader
 import torch
 from torchvision.models import vgg16
 import os
 import pandas as pd
 
-model_name = 'vgg-test_learning_rate = 1e-6_3'
+model_name = 'vgg-test_learning_rate = 1e-6_5'
 weights_path = os.path.join('./weights', model_name)
 results_path = os.path.join('./results', model_name)
 
@@ -24,8 +25,7 @@ plotter_x_interval = 100
 data_dir = './data/wav'
 data = Pineapple(data_dir)
 print(len(data))
-training_data, val_data, test_data = random_split(data, [882, 126, 252], generator=torch.Generator().manual_seed(42))
-#上面的數字我*2了
+training_data, val_data, test_data = Random(data)
 train_dataloader = DataLoader(training_data, batch_size=train_batch_size, shuffle=True)
 val_dataloader = DataLoader(val_data, batch_size=train_batch_size)
 test_dataloader = DataLoader(test_data, batch_size=test_batch_size)
