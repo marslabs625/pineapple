@@ -9,7 +9,7 @@ from torchvision.models import vgg16
 import os
 import pandas as pd
 
-model_name = 'vgg-test_learning_rate = 1e-6_5'
+model_name = 'vgg-test'
 weights_path = os.path.join('./weights', model_name)
 results_path = os.path.join('./results', model_name)
 

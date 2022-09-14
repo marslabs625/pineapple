@@ -17,7 +17,8 @@ class Pineapple(Dataset):
         paths = os.listdir(data_dir)
         print("path",data_dir)
         dicts = ["pine-bottom", "pine-side"]
-        paths = [f'{p}/cam-1/{g}/mic-1' for p in paths for g in dicts]
+        mics = ["mic-1", "mic-2"]
+        paths = [f'{p}/cam-1/{g}/{h}' for p in paths for g in dicts for h in mics]
         self.max_length = 0
         self.paths = []
         self.sounds = []
@@ -36,9 +37,9 @@ class Pineapple(Dataset):
         self.test_csv = self.test_csv.astype('str')
         temp1 = []
         temp2 = []
-        for i in range(len(self.test_csv[0])*4):
+        for i in range(len(self.test_csv[0])*8):
             temp1.append(i+1)
-            temp2.append(self.test_csv[1][int(i/4)])
+            temp2.append(self.test_csv[1][int(i/8)])
         
         self.test_csv=pd.DataFrame(zip(temp1,temp2))
         self.test_csv = self.test_csv.astype('str')
