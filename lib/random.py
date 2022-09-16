@@ -2,8 +2,8 @@ import random
 from sklearn.model_selection import train_test_split
 
 def split(data):
-    train, test = train_test_split(data, train_size=0.7)
-    test, val = train_test_split(test, train_size=2/3)
+    train, test = train_test_split(data, train_size=0.7, random_state = 42)
+    test, val = train_test_split(test, train_size=2/3, random_state = 42)
     print("train =", len(train), "validation =", len(val), "test =", len(test))
     return train, val, test
 

@@ -10,17 +10,17 @@ import os
 import numpy as np
 from PIL import Image
 
-model_name = 'vgg'
+model_name = 'vgg-test_auto_learning_rate'
 weights_path = os.path.join('./weights', model_name)
 results_path = os.path.join('./results', model_name)
 
 test_batch_size = 1
 
 #load data
-data_dir = './data/melspectrogram/'
+data_dir = './data/wav'
 
 test_label_path = os.path.join(data_dir, 'test.csv')
-test_data = Pineapple(test_label_path, data_dir)
+test_data = Pineapple(data_dir, "test")
 test_dataloader = DataLoader(test_data, batch_size=test_batch_size)
 
 #assign model
@@ -35,7 +35,7 @@ model_weights = torch.load(load_path)
 model.load_state_dict(model_weights)
 
 model = model.to(device)
-print(model)
+#print(model)
 print('========================================')
 
 loss_fn = torch.nn.CrossEntropyLoss()

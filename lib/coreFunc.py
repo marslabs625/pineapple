@@ -132,6 +132,7 @@ def evaluate(test_dataloader, model, loss_fn, batch_size, device):
     results['test_loss'] = [test_result[0]]
     results['test_acc'] = [test_result[1]]
 
+
     timer.finish()
 
     print(f"Time: {timer.elapsed_time:.2f} sec\n")
