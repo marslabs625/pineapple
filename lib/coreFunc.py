@@ -74,7 +74,7 @@ def fit(epochs, train_dataloader, model, loss_fn, optimizer, batch_size, device,
     train a model with cpu or gpu device
     '''
     timer = Timer(epochs)
-    
+    optimizer_n = torch.optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.1, last_epoch=-1)
     stop_count = 0
     best_loss = None
 
@@ -87,7 +87,8 @@ def fit(epochs, train_dataloader, model, loss_fn, optimizer, batch_size, device,
 
     for epoch in range(epochs):
         timer.start()
-
+        optimizer_n.step()
+        print("學習率 = %f"%(optimizer.param_groups[0]['lr']))
         print(f"Epoch {epoch+1}\n----------------------------------------")
         history['epoch'].append(epoch + 1)
 

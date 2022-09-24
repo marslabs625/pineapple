@@ -10,7 +10,7 @@ import os
 import numpy as np
 from PIL import Image
 
-model_name = 'vgg-test_auto_learning_rate'
+model_name = 'vgg-test_auto_learning_rate_2'
 weights_path = os.path.join('./weights', model_name)
 results_path = os.path.join('./results', model_name)
 

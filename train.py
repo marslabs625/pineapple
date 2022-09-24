@@ -2,15 +2,15 @@ from lib.dataset import Pineapple
 from lib.models import VGG16
 from lib.coreFunc import fit, evaluate, replace_weights
 from lib.tools import Plotter
-#from lib.random import Random
-from lib.random_csv import Random
+from lib.random import Random
+#from lib.random_csv import Random
 from torch.utils.data import DataLoader
 import torch
 from torchvision.models import vgg16
 import os
 import pandas as pd
 
-model_name = 'vgg-test_auto_learning_rate'
+model_name = 'vgg-test_auto_learning_rate_2'
 weights_path = os.path.join('./weights', model_name)
 results_path = os.path.join('./results', model_name)
 
@@ -26,8 +26,8 @@ plotter_x_interval = 100
 data_dir = './data/wav'
 data = Pineapple(data_dir, "train")
 #print(len(data))
-#training_data, val_data, test_data = Random(data)
-training_data, val_data, test_data = Random(data, data_dir) #csv
+training_data, val_data, test_data = Random(data)
+#training_data, val_data, test_data = Random(data, data_dir) #csv
 train_dataloader = DataLoader(training_data, batch_size=train_batch_size, shuffle=True)
 val_dataloader = DataLoader(val_data, batch_size=train_batch_size)
 test_dataloader = DataLoader(test_data, batch_size=test_batch_size)
@@ -49,13 +49,12 @@ model = model.to(device)
 print('========================================')
 
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-2)
-optimizer_n = torch.optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.1, last_epoch=-1)
+
 loss_fn = torch.nn.CrossEntropyLoss()
 
 #training
 history = fit(epochs, train_dataloader, model, loss_fn, optimizer, train_batch_size, device, val_dataloader, early_stop)
-optimizer_n.step()
-print("學習率 = %f"%(optimizer.param_groups[0]['lr']))
+
 print('========================================')
 
 results = evaluate(test_dataloader, model, loss_fn, test_batch_size, device)

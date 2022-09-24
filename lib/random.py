@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 def split(data):
     train, test = train_test_split(data, train_size=0.7, random_state = 42)
     test, val = train_test_split(test, train_size=2/3, random_state = 42)
-    print("train =", len(train), "validation =", len(val), "test =", len(test))
+    #print("train =", len(train), "validation =", len(val), "test =", len(test))
     return train, val, test
 
 def Random(data):
@@ -29,7 +29,7 @@ def Random(data):
     sm_train, sm_val, sm_test = split(sm)
     mt_train, mt_val, mt_test = split(mt)
     t_train, t_val, t_test = split(t)
-    print("s =", len(s), "sm =", len(sm), "mt =", len(mt), "t =", len(t))
+    #print("s =", len(s), "sm =", len(sm), "mt =", len(mt), "t =", len(t))
     
     train = s_train + sm_train + mt_train + t_train
     val = s_val + sm_val + mt_val + t_val
@@ -38,5 +38,5 @@ def Random(data):
     train = random.sample(train, len(train))
     val = random.sample(val, len(val))
     test = random.sample(test, len(test))
-    print("train =", len(train), "validation =", len(val), "test =", len(test))
+    #print("train =", len(train), "validation =", len(val), "test =", len(test))
     return train, val, test
