@@ -16,10 +16,13 @@ class Pineapple(Dataset):
         data_dir = os.path.join(data_path, 'dictionary')
         paths = os.listdir(data_dir)
         print("path", data_dir)
-        dicts = ["pine-bottom", "pine-side"]
+        #dicts = ["pine-bottom", "pine-side"]
         #mics = ["mic-1", "mic-2"]
+        cams = ["cam-1", "cam-2"]
         #paths = [f'{p}/cam-1/{g}/{h}' for p in paths for g in dicts for h in mics]
-        paths = [f'{p}/cam-1/{g}/mic-1' for p in paths for g in dicts]
+        #paths = [f'{p}/cam-1/{g}/mic-1' for p in paths for g in dicts]
+        paths = [f'{p}/{g}/pine-side/mic-1' for p in paths for g in cams]
+        #print(paths)
         self.max_length = 0
         self.paths = []
         self.sounds = []
