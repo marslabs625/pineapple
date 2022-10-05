@@ -8,9 +8,22 @@ from matplotlib import pyplot as plt
 import torch
 import os
 import numpy as np
+import pandas as pd
 from PIL import Image
 
-model_name = 'weight_decay=1e-3_learning_rate=1e-5_1'
+#cate
+def classify(pred, L):
+    if(pred == 0):
+        L[0] += 1
+    elif(pred == 1):
+        L[1] += 1
+    elif(pred == 2):
+        L[2] += 1
+    else:
+        L[3] += 1
+
+
+model_name = 'weight_decay=1e-3_learning_rate=1e-5_3'
 weights_path = os.path.join('./weights', model_name)
 results_path = os.path.join('./results', model_name)
 
@@ -49,6 +62,9 @@ extractor = torch.nn.Sequential(model.block1, model.block2, model.block3, model.
 classifier = torch.nn.Sequential(model.flatten, model.classifier)
 del model
 torch.cuda.empty_cache()
+
+#generate cate
+cate = [[], [], []]
 
 f_id = 0
 for batch, (X, y) in enumerate(test_dataloader):
@@ -99,6 +115,42 @@ for batch, (X, y) in enumerate(test_dataloader):
     filename = test_data.labels.index[f_id]
     filename = filename.split('.')[0]
     plt.savefig(f"{os.path.join(results_path, 'cam')}/{filename}-{pred[0].numpy()}{y[0].numpy()}.png", format='png')
+    
+    #cate
+    cate[0].append(filename)
+    cate[1].append(pred[0].numpy())
+    cate[2].append(y[0].numpy())
+    
     # plt.show()
     plt.close()
     f_id += 1
+    
+#cate
+acc = {'s' : [0, 0, 0, 0, 0, 0, 0], 'sm' : [0, 0, 0, 0, 0, 0, 0], 'mt' : [0, 0, 0, 0, 0, 0, 0], 't' : [0, 0, 0, 0, 0, 0, 0]}
+for i in range(len(cate[0])):
+    if(cate[2][i] == 0):
+        acc['s'][5] += 1
+        classify(cate[1][i],  acc['s'])
+            
+    elif(cate[2][i] == 1):
+        acc['sm'][5] += 1
+        classify(cate[1][i],  acc['sm'])
+            
+    elif(cate[2][i] == 2):
+        acc['mt'][5] += 1
+        classify(cate[1][i],  acc['mt'])
+        
+    else:
+        acc['t'][5] += 1
+        classify(cate[1][i],  acc['t'])
+
+count = 0
+for i in acc.values():
+    i[4] = i[count]
+    count += 1
+    i[6] = str(f'{(i[4] / i[5] * 100):.2f}%')
+
+cate = pd.DataFrame(cate)
+cate.T.to_csv(os.path.join(results_path, 'cate_list.csv'), header = ['File', 'Pred', 'Label'], index = False)
+acc_data = pd.DataFrame.from_dict(acc, orient = 'index')
+acc_data.to_csv(os.path.join(results_path, 'cate_acc.csv'), header = ['s', 'sm', 'mt', 't', 'Correct', 'Total', 'Accuracy'])

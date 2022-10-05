@@ -10,7 +10,7 @@ from torchvision.models import vgg16
 import os
 import pandas as pd
 
-model_name = 'weight_decay=1e-3_learning_rate=1e-5_2'
+model_name = 'weight_decay=1e-3_learning_rate=1e-5_4'
 weights_path = os.path.join('./weights', model_name)
 results_path = os.path.join('./results', model_name)
 
@@ -58,6 +58,12 @@ loss_fn = torch.nn.CrossEntropyLoss()
 #training
 history = fit(epochs, train_dataloader, model, loss_fn, optimizer, train_batch_size, device, val_dataloader, early_stop)
 
+print('==============train + val===============')
+
+#train + validation
+train_dataloader = DataLoader(training_data + val_data, batch_size=train_batch_size, shuffle=True)
+history_tv = fit(100, train_dataloader, model, loss_fn, optimizer, train_batch_size, device)
+
 print('========================================')
 
 results = evaluate(test_dataloader, model, loss_fn, test_batch_size, device)
@@ -77,9 +83,12 @@ if not os.path.isdir(results_path):
 save_path = os.path.join(weights_path, os.path.split(weights_path)[1] + '.pth')
 torch.save(model.state_dict(), save_path)
 
+del(history_tv['val_loss'])
+del(history_tv['val_acc'])
 log_df = pd.DataFrame.from_dict(history)
+log_tv_df = pd.DataFrame.from_dict(history_tv)
 results_df = pd.DataFrame.from_dict(results)
-log_df = pd.concat([log_df, results_df])
+log_df = pd.concat([log_df, log_tv_df, results_df])
 log_df.set_index('epoch', inplace=True)
 
 log_df.to_csv(os.path.join(results_path, 'log.csv'))
