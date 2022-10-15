@@ -14,9 +14,10 @@ model_name = 'weight_decay=1e-3_learning_rate=1e-5_4'
 weights_path = os.path.join('./weights', model_name)
 results_path = os.path.join('./results', model_name)
 
-train_batch_size = 8
-test_batch_size = 8
+train_batch_size = 16
+test_batch_size = 16
 learning_rate = 1e-5
+weight_decay = 1e-3
 epochs = 1000
 early_stop = 50
 
@@ -48,7 +49,7 @@ model = model.to(device)
 #print(model)
 print('========================================')
 
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-3)
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 #1e-4(64.8&66.5)
 #1e-5(56)
 #optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, weight_decay=1e-2, momentum=0.9)

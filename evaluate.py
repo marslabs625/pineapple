@@ -23,7 +23,7 @@ def classify(pred, L):
         L[3] += 1
 
 
-model_name = 'weight_decay=1e-3_learning_rate=1e-5_3'
+model_name = 'weight_decay=1e-3_learning_rate=1e-5_4'
 weights_path = os.path.join('./weights', model_name)
 results_path = os.path.join('./results', model_name)
 
